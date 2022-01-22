@@ -60,14 +60,14 @@ static inline __ret_type *GTP5G_STRUCT_FUNC_NAME(__func_name)(void) \
 
 struct gtp5g_dev *gtp5g_dev_alloc(void)
 {
-	struct gtp5g_dev *dev;
+    struct gtp5g_dev *dev;
 
-	dev = calloc(1, sizeof(struct gtp5g_dev));
-	if (!dev)
-		return NULL;
+    dev = calloc(1, sizeof(struct gtp5g_dev));
+    if (!dev)
+        return NULL;
 
-	dev->ifns = -1;
-	return dev;
+    dev->ifns = -1;
+    return dev;
 }
 EXPORT_SYMBOL(gtp5g_dev_alloc);
 
@@ -87,13 +87,13 @@ gtp5g_struct_alloc_no_exp(role_addr_ipv4, struct in_addr);
 /* Not in 3GPP spec, just used for buffering */
 static inline char *gtp5g_unix_sock_path_alloc(void)
 {
-	char *unix_sock_path;
+    char *unix_sock_path;
 
-	unix_sock_path = calloc(108, sizeof(char)); // sun_path[108]
-	if (!unix_sock_path)
-		return NULL;
+    unix_sock_path = calloc(108, sizeof(char)); // sun_path[108]
+    if (!unix_sock_path)
+        return NULL;
 
-	return unix_sock_path;
+    return unix_sock_path;
 }
 
 /* Nest in PDI */ 
@@ -751,10 +751,10 @@ EXPORT_SYMBOL(gtp5g_far_get_related_pdr_list);
 /* QER */
 
 /** 8.2.75 QER ID   
- *	Octets5~8
- *		-> QER ID Value
- *			 => BIT8 of Octet5 indicate Dynamically allocated by the CP(BIT8=0) or
- *				predefined in the UP(BIT8=1)
+ *    Octets5~8
+ *        -> QER ID Value
+ *             => BIT8 of Octet5 indicate Dynamically allocated by the CP(BIT8=0) or
+ *                predefined in the UP(BIT8=1)
  * */
 void gtp5g_qer_set_id(struct gtp5g_qer *qer, uint32_t id)
 {
@@ -763,14 +763,13 @@ void gtp5g_qer_set_id(struct gtp5g_qer *qer, uint32_t id)
 EXPORT_SYMBOL(gtp5g_qer_set_id);
 
 /* 8.2.7 Gate Status
- * 	Octet5 
- *		-Spare(4bits)
- *		-UL Gate(2bits)
- *		-DL Gate(2bits)
- * 	Value(Decimal):
- *		0 - OPEN (Default UL & DL)
- *		1 -	CLOSED
- *	
+ *     Octet5
+ *        -Spare(4bits)
+ *        -UL Gate(2bits)
+ *        -DL Gate(2bits)
+ *     Value(Decimal):
+ *        0 - OPEN (Default UL & DL)
+ *        1 -    CLOSED
  * */
 void gtp5g_qer_set_gate_status(struct gtp5g_qer *qer, uint8_t ul_dl_gate)
 {
@@ -779,8 +778,8 @@ void gtp5g_qer_set_gate_status(struct gtp5g_qer *qer, uint8_t ul_dl_gate)
 EXPORT_SYMBOL(gtp5g_qer_set_gate_status);
 
 /* 8.2.8 MBR
- * 	Octet5~9, 	UL MBR
- * 	Octet10~14, DL MBR
+ *     Octet5~9,     UL MBR
+ *     Octet10~14, DL MBR
  *
  * NOTE1: Encode as kilobits per second (1kbps = 1000bps) 
  * NOTE2: The range of UL/DL MBR is specified in 3GPP TS 36.413 [10].
@@ -842,62 +841,61 @@ EXPORT_SYMBOL(gtp5g_qer_set_gbr_dlow);
  * */
 void gtp5g_qer_set_qer_corr_id(struct gtp5g_qer *qer, uint32_t qer_corr_id)
 {
-	qer->qer_corr_id = qer_corr_id;
+    qer->qer_corr_id = qer_corr_id;
 }
 EXPORT_SYMBOL(gtp5g_qer_set_qer_corr_id);
 
 /* 8.2.88 RQI
- * 	Octet5:
- *		-> Spare(7bits)
- *		-> RQI (1bit)
- *			0 - Deactivate Reflective QoS (Default)
- *			1 - Activate Reflective QoS
+ *     Octet5:
+ *        -> Spare(7bits)
+ *        -> RQI (1bit)
+ *            0 - Deactivate Reflective QoS (Default)
+ *            1 - Activate Reflective QoS
  * */
 void gtp5g_qer_set_rqi(struct gtp5g_qer *qer, uint8_t rqi)
 {
-	qer->rqi = rqi;
+    qer->rqi = rqi;
 }
 EXPORT_SYMBOL(gtp5g_qer_set_rqi);
 
 /* 8.2.89 QFI
- *	-> It contains an QoS flow identifier identifying a QoS flow in a 5G 
- *		system filter
+ *    -> It contains an QoS flow identifier identifying a QoS flow in a 5G
+ *        system filter
  * Octet5,
- *		-> Spare (2bits)
- *		-> QFI (6bits)
+ *        -> Spare (2bits)
+ *        -> QFI (6bits)
  * */
 void gtp5g_qer_set_qfi(struct gtp5g_qer *qer, uint8_t qfi)
 {
-	qer->qfi = (qfi & 0x3F);
+    qer->qfi = (qfi & 0x3F);
 }
 EXPORT_SYMBOL(gtp5g_qer_set_qfi);
 
 /* 8.2.116 Paging Policy Indicator (PPI)
- *	-> Indicates a value for paging policy differentiation
+ *    -> Indicates a value for paging policy differentiation
  * Octet5,
- *		-> Spare (5bits)
- *		-> PPI (3bits)
+ *        -> Spare (5bits)
+ *        -> PPI (3bits)
  * */
 void gtp5g_qer_set_ppi(struct gtp5g_qer *qer, uint8_t ppi)
 {
-	qer->ppi = (ppi & 0x07);
+    qer->ppi = (ppi & 0x07);
 }
 EXPORT_SYMBOL(gtp5g_qer_set_ppi);
 
 /* 8.2.174 QER Control Indications
- *	-> Indicates a value for paging policy differentiation
+ *    -> Indicates a value for paging policy differentiation
  * Octet5,
- *		-> Spare (7bits)
- *		-> RCSR (1bit)
- *			1 -> UP function SHALL report the rate control status when the
- *				PFCP session released
- *			0 -> UP function SHALL NOT report the rate control status when the
- *				PFCP session released
- *			 
+ *        -> Spare (7bits)
+ *        -> RCSR (1bit)
+ *            1 -> UP function SHALL report the rate control status when the
+ *                PFCP session released
+ *            0 -> UP function SHALL NOT report the rate control status when the
+ *                PFCP session released
  * */
 void gtp5g_qer_set_rcsr(struct gtp5g_qer *qer, uint8_t rcsr)
 {
-	qer->rcsr = (rcsr & 0x01);
+    qer->rcsr = (rcsr & 0x01);
 }
 EXPORT_SYMBOL(gtp5g_qer_set_rcsr);
 
@@ -915,7 +913,7 @@ EXPORT_SYMBOL(gtp5g_qer_get_id);
 
 void gtp5g_qer_free(struct gtp5g_qer *qer)
 {
-	free(qer);
+    free(qer);
 }
 EXPORT_SYMBOL(gtp5g_qer_free);
 

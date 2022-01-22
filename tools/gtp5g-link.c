@@ -5,7 +5,7 @@
  * (C) 2017 by Pablo Neira Ayuso <pablo@gnumonks.org>
  *
  * Author: Yao-Wen Chang <yaowenowo@gmail.com>
- *			Muthuraman Elangovan <muthuramane.cs03g@g2.nctu.edu.tw>
+ *         Muthuraman Elangovan <muthuramane.cs03g@g2.nctu.edu.tw>
  *
  * All Rights Reserved
  *
@@ -44,60 +44,60 @@
 
 int main(int argc, char *argv[])
 {
-	char buf[MNL_SOCKET_BUFFER_SIZE];
-	int ret, ran_mode = 0;
+    char buf[MNL_SOCKET_BUFFER_SIZE];
+    int ret, ran_mode = 0;
 
-	if (argc < 3) {
-		printf("Usage: %s <add|del> <device>\n", argv[0]);
-		exit(EXIT_FAILURE);
-	}
+    if (argc < 3) {
+        printf("Usage: %s <add|del> <device>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
 
-	if (!strcmp(argv[1], "del")) {
-		printf("destroying gtp interface...\n");
-		if (gtp_dev_destroy(argv[2]) < 0)
-			perror("gtp_dev_destroy");
+    if (!strcmp(argv[1], "del")) {
+        printf("destroying gtp interface...\n");
+        if (gtp_dev_destroy(argv[2]) < 0)
+            perror("gtp_dev_destroy");
 
-		return 0;
-	}
+        return 0;
+    }
 
-	if (argc > 3 && !strcmp(argv[3], "--ran"))
-		ran_mode = 1;
+    if (argc > 3 && !strcmp(argv[3], "--ran"))
+        ran_mode = 1;
 
-	int fd = socket(AF_INET, SOCK_DGRAM, 0);
-	struct sockaddr_in sockaddr_fd = {
-		.sin_family	= AF_INET,
-		.sin_port	= htons(2152),
-		.sin_addr	= {
-			.s_addr 	= INADDR_ANY,
-		},
-	};
+    int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    struct sockaddr_in sockaddr_fd = {
+        .sin_family    = AF_INET,
+        .sin_port    = htons(2152),
+        .sin_addr    = {
+            .s_addr     = INADDR_ANY,
+        },
+    };
 
-	if (bind(fd, (struct sockaddr *) &sockaddr_fd,
-		 sizeof(sockaddr_fd)) < 0) {
-		perror("bind");
-		exit(EXIT_FAILURE);
-	}
+    if (bind(fd, (struct sockaddr *) &sockaddr_fd,
+         sizeof(sockaddr_fd)) < 0) {
+        perror("bind");
+        exit(EXIT_FAILURE);
+    }
 
-	if (ran_mode)
-		ret = gtp_dev_create_ran(-1, argv[2], fd);
-	else
-		ret = gtp_dev_create(-1, argv[2], fd);
-	if (ret < 0) {
-		perror("cannot create 5G GTP device\n");
-		exit(EXIT_FAILURE);
-	}
+    if (ran_mode)
+        ret = gtp_dev_create_ran(-1, argv[2], fd);
+    else
+        ret = gtp_dev_create(-1, argv[2], fd);
+    if (ret < 0) {
+        perror("cannot create 5G GTP device\n");
+        exit(EXIT_FAILURE);
+    }
 
-	fprintf(stderr, "WARNING: attaching dummy socket descriptors. Keep "
-			"this process running for testing purposes.\n");
+    fprintf(stderr, "WARNING: attaching dummy socket descriptors. Keep "
+            "this process running for testing purposes.\n");
 
-	while (1) {
-		struct sockaddr_in addr;
-		socklen_t len = sizeof(addr);
+    while (1) {
+        struct sockaddr_in addr;
+        socklen_t len = sizeof(addr);
 
-		ret = recvfrom(fd, buf, sizeof(buf), 0,
-			       (struct sockaddr *)&addr, &len);
-		printf("received %d bytes via UDP socket\n", ret);
-	}
+        ret = recvfrom(fd, buf, sizeof(buf), 0,
+                   (struct sockaddr *)&addr, &len);
+        printf("received %d bytes via UDP socket\n", ret);
+    }
 
-	return 0;
+    return 0;
 }

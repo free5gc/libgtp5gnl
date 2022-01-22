@@ -41,10 +41,10 @@ enum gtp5g_pdr_attrs {
 
     GTP5G_PDR_QER_ID,
 
-	/* Add newly supported feature ON ABOVE
-	 * for compatability with older version of
-	 * free5GC's UPF or gtp5g
-	 * */
+    /* Add newly supported feature ON ABOVE
+     * for compatability with older version of
+     * free5GC's UPF or gtp5g
+     * */
 
     __GTP5G_PDR_ATTR_MAX,
 };
@@ -151,7 +151,7 @@ enum {
 #define GTP5G_SDF_FILTER_DIRECTION_MAX (__GTP5G_SDF_FILTER_DIRECTION_MAX - 1)
 
 /* ------------------------------------------------------------------
- *								QER
+ *                                QER
  * ------------------------------------------------------------------
  * */
 enum gtp5g_qer_attrs {
@@ -160,13 +160,12 @@ enum gtp5g_qer_attrs {
     GTP5G_QER_ID = 3,
     GTP5G_QER_GATE,
     GTP5G_QER_MBR,
-	GTP5G_QER_GBR,
-	GTP5G_QER_CORR_ID,
-	GTP5G_QER_RQI,
-	GTP5G_QER_QFI,
-	GTP5G_QER_PPI,
-	GTP5G_QER_RCSR,
-	
+    GTP5G_QER_GBR,
+    GTP5G_QER_CORR_ID,
+    GTP5G_QER_RQI,
+    GTP5G_QER_QFI,
+    GTP5G_QER_PPI,
+    GTP5G_QER_RCSR,
 
     /* Not IEs in 3GPP Spec, for other purpose */
     GTP5G_QER_RELATED_TO_PDR,

@@ -3,10 +3,10 @@
 
 #include "config.h"
 #ifdef HAVE_VISIBILITY_HIDDEN
-#	define __visible	__attribute__((visibility("default")))
-#	define EXPORT_SYMBOL(x)	typeof(x) (x) __visible
+#    define __visible    __attribute__((visibility("default")))
+#    define EXPORT_SYMBOL(x)    typeof(x) (x) __visible
 #else
-#	define EXPORT_SYMBOL
+#    define EXPORT_SYMBOL
 #endif
 
 #include <stdint.h>
@@ -18,46 +18,46 @@ struct gtp5g_dev {
 };
 
 /* References:
- *	Spec:
- *		For IE Types, 3GPP TS 29.244 v16.4.0 (2020-06)
+ *    Spec:
+ *        For IE Types, 3GPP TS 29.244 v16.4.0 (2020-06)
  * */
 struct gtp5g_qer {
-	uint32_t 	id; 					/* 8.2.75 QER_ID */
-	uint8_t		ul_dl_gate;				/* 8.2.7 Gate Status */
-	struct {
-		uint32_t	ul_high;
-		uint8_t		ul_low;
-		uint32_t	dl_high;
-		uint8_t		dl_low;
-	} mbr;								/* 8.2.8 MBR */
-	struct {
-		uint32_t	ul_high;
-		uint8_t		ul_low;
-		uint32_t	dl_high;
-		uint8_t		dl_low;
-	} gbr;								/* 8.2.9 GBR */
-	uint32_t		qer_corr_id;		/* 8.2.10 QER Correlation ID  */
-	uint8_t			rqi;				/* 8.2.88 RQI */
-	uint8_t			qfi;				/* 8.2.89 QFI */
+    uint32_t        id;                 /* 8.2.75 QER_ID */
+    uint8_t         ul_dl_gate;         /* 8.2.7 Gate Status */
+    struct {
+        uint32_t    ul_high;
+        uint8_t     ul_low;
+        uint32_t    dl_high;
+        uint8_t     dl_low;
+    } mbr;                              /* 8.2.8 MBR */
+    struct {
+        uint32_t    ul_high;
+        uint8_t     ul_low;
+        uint32_t    dl_high;
+        uint8_t     dl_low;
+    } gbr;                              /* 8.2.9 GBR */
+    uint32_t        qer_corr_id;        /* 8.2.10 QER Correlation ID  */
+    uint8_t         rqi;                /* 8.2.88 RQI */
+    uint8_t         qfi;                /* 8.2.89 QFI */
 
-	/* 8.2.115 Averaging Window (Optional) */
+    /* 8.2.115 Averaging Window (Optional) */
 
-	uint8_t			ppi;				/* 8.2.116 Paging Policy Indicator */
+    uint8_t         ppi;                /* 8.2.116 Paging Policy Indicator */
 
-	/* 8.2.139 Packet Rate Status */
+    /* 8.2.139 Packet Rate Status */
 
-	/* Rate Control Status Reporting */
-	uint8_t			rcsr; 				/* 8.2.174 QER Control Indications */
+    /* Rate Control Status Reporting */
+    uint8_t         rcsr;               /* 8.2.174 QER Control Indications */
 
     /* Not IEs in 3GPP Spec, for other purpose */
-    int 			related_pdr_num;
-    uint16_t 		*related_pdr_list;
+    int             related_pdr_num;
+    uint16_t        *related_pdr_list;
 };
 
 struct gtp5g_outer_header_creation {
-    uint16_t desp;					/* Outer Header Creation Description */
-    uint32_t teid; 					/* TEID */
-    struct in_addr peer_addr_ipv4; 	/* IPV4 Address */
+    uint16_t desp;                     /* Outer Header Creation Description */
+    uint32_t teid;                     /* TEID */
+    struct in_addr peer_addr_ipv4;     /* IPV4 Address */
     uint16_t port;
 };
 
@@ -69,16 +69,16 @@ struct gtp5g_forwarding_policy {
 };
 
 struct gtp5g_forwarding_parameter {
-	//uint8_t dest_int;
-	//char *network_instance;
+    //uint8_t dest_int;
+    //char *network_instance;
     
     struct gtp5g_outer_header_creation *hdr_creation; /* Outer Header creation */
     struct gtp5g_forwarding_policy *fwd_policy;
 };
 
 struct gtp5g_far {
-    uint32_t id;								/* FAR_ID */
-    uint8_t apply_action; 						/* Apply Action */
+    uint32_t id;                                  /* FAR_ID */
+    uint8_t apply_action;                         /* Apply Action */
     
     struct gtp5g_forwarding_parameter *fwd_param; /* Forwarding Parameters */
 
@@ -93,7 +93,7 @@ struct local_f_teid {
 };
 
 struct ip_filter_rule {
-    uint8_t action;                   // permit only
+    uint8_t action;                     // permit only
     uint8_t direction;                  // in/out
     uint8_t proto;                      // number or "ip" which is not used for matching
     struct in_addr src, smask;          // ip addr or "any" -> 0.0.0.0
@@ -113,11 +113,11 @@ struct sdf_filter {
 };
 
 struct gtp5g_pdi {
-	//uint8_t src_int;
-	//char *network_instance;
+    //uint8_t src_int;
+    //char *network_instance;
     struct in_addr *ue_addr_ipv4;
 
-	/* Local F-TEID */
+    /* Local F-TEID */
     struct local_f_teid *f_teid;
     struct sdf_filter *sdf;
 };
@@ -131,7 +131,7 @@ struct gtp5g_pdr {
 
     uint32_t *far_id;
 
-	uint32_t *qer_id;
+    uint32_t *qer_id;
 
     /* Not in 3GPP spec, just used for routing */
     struct in_addr *role_addr_ipv4;

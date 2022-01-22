@@ -46,25 +46,25 @@
 
 static void gtp5g_build_pdr_payload(struct nlmsghdr *nlh, struct gtp5g_dev *dev, struct gtp5g_pdr *pdr)
 {
-	// Let kernel get dev easily
-	if (dev->ifns >= 0)
-		mnl_attr_put_u32(nlh, GTP5G_NET_NS_FD, dev->ifns);
+    // Let kernel get dev easily
+    if (dev->ifns >= 0)
+        mnl_attr_put_u32(nlh, GTP5G_NET_NS_FD, dev->ifns);
 
-	mnl_attr_put_u32(nlh, GTP5G_LINK, dev->ifidx);
+    mnl_attr_put_u32(nlh, GTP5G_LINK, dev->ifidx);
 
-	// Level 1 PDR
-	mnl_attr_put_u16(nlh, GTP5G_PDR_ID, pdr->id);
+    // Level 1 PDR
+    mnl_attr_put_u16(nlh, GTP5G_PDR_ID, pdr->id);
 
-	if (pdr->precedence)
-		mnl_attr_put_u32(nlh, GTP5G_PDR_PRECEDENCE, *pdr->precedence);
+    if (pdr->precedence)
+        mnl_attr_put_u32(nlh, GTP5G_PDR_PRECEDENCE, *pdr->precedence);
 
-	if (pdr->outer_hdr_removal)
-		mnl_attr_put_u8(nlh, GTP5G_OUTER_HEADER_REMOVAL, *pdr->outer_hdr_removal);
+    if (pdr->outer_hdr_removal)
+        mnl_attr_put_u8(nlh, GTP5G_OUTER_HEADER_REMOVAL, *pdr->outer_hdr_removal);
 
-	if (pdr->far_id)
-		mnl_attr_put_u32(nlh, GTP5G_PDR_FAR_ID, *pdr->far_id);
+    if (pdr->far_id)
+        mnl_attr_put_u32(nlh, GTP5G_PDR_FAR_ID, *pdr->far_id);
 
-	if (pdr->qer_id)
+    if (pdr->qer_id)
         mnl_attr_put_u32(nlh, GTP5G_PDR_QER_ID, *pdr->qer_id);
     
     /* Not in 3GPP spec, just used for routing */
@@ -245,7 +245,7 @@ static int genl_gtp5g_pdr_validate_cb(const struct nlattr *attr, void *data)
             if (mnl_attr_validate(attr, MNL_TYPE_U32) < 0)
                 goto VALIDATE_FAIL;
             break;
-		case GTP5G_PDR_QER_ID:
+        case GTP5G_PDR_QER_ID:
             if (mnl_attr_validate(attr, MNL_TYPE_U32) < 0)
                 goto VALIDATE_FAIL;
             break;
@@ -856,11 +856,11 @@ static int genl_gtp5g_attr_cb(const struct nlmsghdr *nlh, void *data)
         }
     }
 
-	if (pdr_tb[GTP5G_PDR_FAR_ID])
-		gtp5g_pdr_set_far_id(pdr, mnl_attr_get_u32(pdr_tb[GTP5G_PDR_FAR_ID]));
+    if (pdr_tb[GTP5G_PDR_FAR_ID])
+        gtp5g_pdr_set_far_id(pdr, mnl_attr_get_u32(pdr_tb[GTP5G_PDR_FAR_ID]));
 
-	if (pdr_tb[GTP5G_PDR_QER_ID])
-		gtp5g_pdr_set_qer_id(pdr, mnl_attr_get_u32(pdr_tb[GTP5G_PDR_QER_ID]));
+    if (pdr_tb[GTP5G_PDR_QER_ID])
+        gtp5g_pdr_set_qer_id(pdr, mnl_attr_get_u32(pdr_tb[GTP5G_PDR_QER_ID]));
 
     /* Not in 3GPP spec, just used for routing */
     if (pdr_tb[GTP5G_PDR_ROLE_ADDR_IPV4]) {
