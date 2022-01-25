@@ -52,6 +52,7 @@ static void gtp5g_build_far_payload(struct nlmsghdr *nlh, struct gtp5g_dev *dev,
     mnl_attr_put_u32(nlh, GTP5G_LINK, dev->ifidx);
 
     // Level 1 FAR
+    mnl_attr_put_u64(nlh, GTP5G_FAR_SEID, far->seid);
     mnl_attr_put_u32(nlh, GTP5G_FAR_ID, far->id);
     
     if (far->apply_action)
@@ -268,8 +269,12 @@ static int genl_gtp5g_attr_list_cb(const struct nlmsghdr *nlh, void *data)
     struct in_addr *ipv4 = (void *)buf;
 
     mnl_attr_parse(nlh, sizeof(*genl), genl_gtp5g_far_validate_cb, far_tb);
-    if (far_tb[GTP5G_FAR_ID])
+    if (far_tb[GTP5G_FAR_ID] && far_tb[GTP5G_FAR_SEID])
+        printf("[FAR No.%u SEID %lu Info]\n", mnl_attr_get_u32(far_tb[GTP5G_FAR_ID]), 
+            mnl_attr_get_u64(far_tb[GTP5G_FAR_SEID]));
+    else if (far_tb[GTP5G_FAR_ID])
         printf("[FAR No.%u Info]\n", mnl_attr_get_u32(far_tb[GTP5G_FAR_ID]));
+
     if (far_tb[GTP5G_FAR_APPLY_ACTION])
         printf("%s- Apply Action: %u\n", indent_str, mnl_attr_get_u8(far_tb[GTP5G_FAR_APPLY_ACTION]));
 
@@ -348,7 +353,11 @@ void gtp5g_print_far(struct gtp5g_far *far)
         return;
     }
 
-    printf("[FAR No.%u Info]\n", far->id);
+    if (far->seid)
+        printf("[FAR No.%u SEID %lu Info]\n", far->id, far->seid);
+    else
+        printf("[FAR No.%u Info]\n", far->id);
+
     printf("%s- Apply Action: %u\n", indent_str, far->apply_action);
     if (far->fwd_param) {
         fwd_param = far->fwd_param;
@@ -402,6 +411,10 @@ static int genl_gtp5g_attr_cb(const struct nlmsghdr *nlh, void *data)
 
     if (far_tb[GTP5G_FAR_ID])
         gtp5g_far_set_id(far, mnl_attr_get_u32(far_tb[GTP5G_FAR_ID]));
+
+    if (far_tb[GTP5G_FAR_SEID])
+        gtp5g_far_set_seid(far, mnl_attr_get_u64(far_tb[GTP5G_FAR_SEID]));
+
     if (far_tb[GTP5G_FAR_APPLY_ACTION])
         gtp5g_far_set_apply_action(far, mnl_attr_get_u8(far_tb[GTP5G_FAR_APPLY_ACTION]));
 

@@ -122,11 +122,12 @@ static struct gtp5g_pdr *prepare_pdr(int argc, char *argv[])
     int ret;
     struct sockaddr_in sa;
 
-    if (argc < 5)
+    if (argc < 6)
         goto err;
 
     pdr = gtp5g_pdr_alloc();
-    gtp5g_pdr_set_id(pdr, atoi(argv[4]));
+    gtp5g_pdr_set_seid(pdr,atoll(argv[4]));
+    gtp5g_pdr_set_id(pdr, atoi(argv[5]));
 
     while((opt = getopt_long_only(argc, argv, "", long_pdr_options, &opt_index)) != EOF) {
         switch(opt) {
@@ -281,7 +282,6 @@ static int del_pdr(int argc, char *argv[], int genl_id, struct mnl_socket *nl)
 
     pdr = gtp5g_pdr_alloc();
     gtp5g_pdr_set_id(pdr, atoi(argv[++optidx]));
-
     gtp5g_del_pdr(genl_id, nl, dev, pdr);
 
     gtp5g_pdr_free(pdr);
@@ -318,6 +318,8 @@ static int get_pdr(int argc, char *argv[], int genl_id, struct mnl_socket *nl)
     gtp5g_dev_set_ifidx(dev, ifidx);
 
     pdr = gtp5g_pdr_alloc();
+
+    gtp5g_pdr_set_seid(pdr,atoll(argv[++optidx]));
     gtp5g_pdr_set_id(pdr, atoi(argv[++optidx]));
 
     rt_pdr = gtp5g_pdr_find_by_id(genl_id, nl, dev, pdr);
@@ -350,11 +352,12 @@ static struct gtp5g_far *prepare_far(int argc, char *argv[])
     int ret;
     struct sockaddr_in sa;
 
-    if (argc < 5)
+    if (argc < 6)
         goto err;
 
     far = gtp5g_far_alloc();
-    gtp5g_far_set_id(far, atoi(argv[4]));
+    gtp5g_far_set_seid(far,atoll(argv[4]));
+    gtp5g_far_set_id(far, atoi(argv[5]));
 
     while((opt = getopt_long_only(argc, argv, "", long_far_options, &opt_index)) != EOF) {
         switch(opt) {
@@ -469,6 +472,7 @@ static int del_far(int argc, char *argv[], int genl_id, struct mnl_socket *nl)
     gtp5g_dev_set_ifidx(dev, ifidx);
 
     far = gtp5g_far_alloc();
+    gtp5g_far_set_seid(far, atoi(argv[++optidx]));
     gtp5g_far_set_id(far, atoi(argv[++optidx]));
 
     gtp5g_del_far(genl_id, nl, dev, far);
@@ -507,6 +511,7 @@ static int get_far(int argc, char *argv[], int genl_id, struct mnl_socket *nl)
     gtp5g_dev_set_ifidx(dev, ifidx);
 
     far = gtp5g_far_alloc();
+    gtp5g_far_set_seid(far,atoll(argv[++optidx]));
     gtp5g_far_set_id(far, atoi(argv[++optidx]));
 
     rt_far = gtp5g_far_find_by_id(genl_id, nl, dev, far);
@@ -600,7 +605,8 @@ static struct gtp5g_qer *prepare_qer(int argc, char *argv[])
     }
 
     //Assign QER ID (--qer-id)
-    gtp5g_qer_set_id(qer, atoi(argv[4]));
+    gtp5g_qer_set_seid(qer,atoll(argv[4]));
+    gtp5g_qer_set_id(qer, atoi(argv[5]));
     while((opt = getopt_long_only(argc, argv, "", long_qer_options, &opt_index)) != EOF) {
         switch(opt) {
 #if 0
@@ -824,7 +830,7 @@ static int get_qer(int argc, char *argv[], int genl_id, struct mnl_socket *nl)
     int ret = 0;
 
     // TODO: Need to modify argc in release version
-    if (argc < 5) {
+    if (argc < 6) {
         add_usage(argv[0]);
         ret = EXIT_FAILURE;
         goto out;
@@ -853,6 +859,7 @@ static int get_qer(int argc, char *argv[], int genl_id, struct mnl_socket *nl)
         ret = EXIT_FAILURE;
         goto out_dev;
     }
+    gtp5g_qer_set_seid(qer, atoll(argv[++optidx]));
     gtp5g_qer_set_id(qer, atoi(argv[++optidx]));
 
     rt_qer = gtp5g_qer_find_by_id(genl_id, nl, dev, qer);

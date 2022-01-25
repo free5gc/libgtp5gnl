@@ -59,6 +59,7 @@ static void gtp5g_build_qer_payload(struct nlmsghdr *nlh, struct gtp5g_dev *dev,
     mnl_attr_put_u32(nlh, GTP5G_LINK, dev->ifidx);
 
     // Level 1 QER
+    mnl_attr_put_u64(nlh, GTP5G_QER_SEID, qer->seid);
     mnl_attr_put_u32(nlh, GTP5G_QER_ID, qer->id);
     mnl_attr_put_u8(nlh, GTP5G_QER_GATE, qer->ul_dl_gate);
 
@@ -185,6 +186,10 @@ static int genl_gtp5g_qer_validate_cb(const struct nlattr *attr, void *data)
     switch (type) {
     case GTP5G_QER_ID:
         if (mnl_attr_validate(attr, MNL_TYPE_U32) < 0)
+            goto VALIDATE_FAIL;
+        break;
+    case GTP5G_QER_SEID:
+        if (mnl_attr_validate(attr, MNL_TYPE_U64) < 0)
             goto VALIDATE_FAIL;
         break;
     case GTP5G_QER_GATE:
@@ -323,6 +328,9 @@ static int genl_gtp5g_qer_attr_list_cb(const struct nlmsghdr *nlh, void *data)
     if (qer_tb[GTP5G_QER_ID])
         printf("[QER ID: %u]\n", mnl_attr_get_u32(qer_tb[GTP5G_QER_ID]));
 
+    if (qer_tb[GTP5G_QER_SEID])
+        printf("\t SEID %lu\n", mnl_attr_get_u64(qer_tb[GTP5G_QER_SEID]));
+
     if (qer_tb[GTP5G_QER_GATE])
         printf("\t Gate Status: %u\n", mnl_attr_get_u8(qer_tb[GTP5G_QER_GATE]));
 
@@ -417,7 +425,11 @@ void gtp5g_print_qer(struct gtp5g_qer *qer)
         return;
     }
 
-    printf("[QER No.%u Info]\n", qer->id);
+    if (qer->seid)
+        printf("[QER No.%u SEID %lu Info]\n", qer->id, qer->seid);
+    else
+        printf("[QER No.%u Info]\n", qer->id);
+
     if (qer->related_pdr_num && qer->related_pdr_list) {
         printf("\t Related PDR ID: ");
         u16_id_list_from_kernel_space_print(qer->related_pdr_list, qer->related_pdr_num);
@@ -437,6 +449,9 @@ static int genl_gtp5g_attr_cb(const struct nlmsghdr *nlh, void *data)
 
     if (qer_tb[GTP5G_QER_ID])
         gtp5g_qer_set_id(qer, mnl_attr_get_u32(qer_tb[GTP5G_QER_ID]));
+
+    if (qer_tb[GTP5G_QER_SEID])     
+        gtp5g_qer_set_seid(qer, mnl_attr_get_u64(qer_tb[GTP5G_QER_SEID]));
 
     if (qer_tb[GTP5G_QER_RELATED_TO_PDR]) {
         qer->related_pdr_num = mnl_attr_get_payload_len(qer_tb[GTP5G_QER_RELATED_TO_PDR]) / (sizeof(uint16_t) / sizeof(char));

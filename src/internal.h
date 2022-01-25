@@ -23,6 +23,7 @@ struct gtp5g_dev {
  * */
 struct gtp5g_qer {
     uint32_t        id;                 /* 8.2.75 QER_ID */
+    uint64_t        seid;
     uint8_t         ul_dl_gate;         /* 8.2.7 Gate Status */
     struct {
         uint32_t    ul_high;
@@ -78,6 +79,7 @@ struct gtp5g_forwarding_parameter {
 
 struct gtp5g_far {
     uint32_t id;                                  /* FAR_ID */
+    uint64_t seid;
     uint8_t apply_action;                         /* Apply Action */
     
     struct gtp5g_forwarding_parameter *fwd_param; /* Forwarding Parameters */
@@ -124,6 +126,7 @@ struct gtp5g_pdi {
 
 struct gtp5g_pdr {
     uint16_t id;
+    uint64_t seid;
     uint32_t *precedence;
     struct gtp5g_pdi *pdi;
 

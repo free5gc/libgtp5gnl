@@ -363,6 +363,12 @@ void gtp5g_pdr_set_id(struct gtp5g_pdr *pdr, uint16_t id)
 }
 EXPORT_SYMBOL(gtp5g_pdr_set_id);
 
+void gtp5g_pdr_set_seid(struct gtp5g_pdr *pdr, uint64_t seid)
+{
+    pdr->seid = seid;
+}
+EXPORT_SYMBOL(gtp5g_pdr_set_seid);
+
 void gtp5g_pdr_set_precedence(struct gtp5g_pdr *pdr, uint32_t precedence)
 {
     precedence_may_alloc(pdr);
@@ -655,6 +661,12 @@ void gtp5g_far_set_id(struct gtp5g_far *far, uint32_t id)
 }
 EXPORT_SYMBOL(gtp5g_far_set_id);
 
+void gtp5g_far_set_seid(struct gtp5g_far *far, uint64_t seid)
+{
+    far->seid = seid;
+}
+EXPORT_SYMBOL(gtp5g_far_set_seid);
+
 void gtp5g_far_set_apply_action(struct gtp5g_far *far, uint8_t apply_action)
 {
     far->apply_action = apply_action;
@@ -762,6 +774,11 @@ void gtp5g_qer_set_id(struct gtp5g_qer *qer, uint32_t id)
 }
 EXPORT_SYMBOL(gtp5g_qer_set_id);
 
+void gtp5g_qer_set_seid(struct gtp5g_qer *qer, uint64_t seid)
+{
+    qer->seid = seid;
+}
+EXPORT_SYMBOL(gtp5g_qer_set_seid);
 /* 8.2.7 Gate Status
  *     Octet5
  *        -Spare(4bits)

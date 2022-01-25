@@ -53,6 +53,8 @@ static void gtp5g_build_pdr_payload(struct nlmsghdr *nlh, struct gtp5g_dev *dev,
     mnl_attr_put_u32(nlh, GTP5G_LINK, dev->ifidx);
 
     // Level 1 PDR
+    mnl_attr_put_u64(nlh, GTP5G_PDR_SEID, pdr->seid);
+
     mnl_attr_put_u16(nlh, GTP5G_PDR_ID, pdr->id);
 
     if (pdr->precedence)
@@ -436,8 +438,13 @@ static int genl_gtp5g_attr_list_cb(const struct nlmsghdr *nlh, void *data)
     int mask;
 
     mnl_attr_parse(nlh, sizeof(*genl), genl_gtp5g_pdr_validate_cb, pdr_tb);
-    if (pdr_tb[GTP5G_PDR_ID])
+
+    if (pdr_tb[GTP5G_PDR_ID] && pdr_tb[GTP5G_PDR_SEID])
+        printf("[PDR No.%u SEID %lu Info]\n", mnl_attr_get_u16(pdr_tb[GTP5G_PDR_ID]),
+            mnl_attr_get_u64(pdr_tb[GTP5G_PDR_SEID]));
+    else if (pdr_tb[GTP5G_PDR_ID])
         printf("[PDR No.%u Info]\n", mnl_attr_get_u16(pdr_tb[GTP5G_PDR_ID]));
+
     if (pdr_tb[GTP5G_PDR_PRECEDENCE])
         printf("%s- Precedence: %u\n", indent_str, mnl_attr_get_u32(pdr_tb[GTP5G_PDR_PRECEDENCE]));
     if (pdr_tb[GTP5G_OUTER_HEADER_REMOVAL])
@@ -628,7 +635,11 @@ void gtp5g_print_pdr(struct gtp5g_pdr *pdr)
         return;
     }
 
-    printf("[PDR No.%u Info]\n", pdr->id);
+    if (pdr->seid)
+        printf("[PDR No.%u SEID %lu Info]\n", pdr->id, pdr->seid);
+    else
+        printf("[PDR No.%u Info]\n", pdr->id);
+
     printf("%s- Precedence: %u\n", indent_str, *pdr->precedence);
     if (pdr->outer_hdr_removal)
         printf("%s- Outer Header Removal: %u\n", indent_str, *pdr->outer_hdr_removal);
@@ -774,6 +785,9 @@ static int genl_gtp5g_attr_cb(const struct nlmsghdr *nlh, void *data)
 
     if (pdr_tb[GTP5G_PDR_ID])
         gtp5g_pdr_set_id(pdr, mnl_attr_get_u16(pdr_tb[GTP5G_PDR_ID]));
+    
+    if (pdr_tb[GTP5G_PDR_SEID])
+        gtp5g_pdr_set_seid(pdr, mnl_attr_get_u64(pdr_tb[GTP5G_PDR_SEID]));
 
     if (pdr_tb[GTP5G_PDR_PRECEDENCE])
         gtp5g_pdr_set_precedence(pdr, mnl_attr_get_u32(pdr_tb[GTP5G_PDR_PRECEDENCE]));
