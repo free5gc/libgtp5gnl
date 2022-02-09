@@ -49,6 +49,7 @@ global:
   gtp5g_dev_set_ifidx;
 
   gtp5g_pdr_set_id;
+  gtp5g_pdr_set_seid;
   gtp5g_pdr_set_precedence;
   gtp5g_pdr_set_outer_header_removal;
   gtp5g_pdr_set_far_id;
@@ -72,6 +73,7 @@ global:
   gtp5g_pdr_get_local_f_teid_teid;
   gtp5g_pdr_get_local_f_teid_gtpu_addr_ipv4;
 
+  gtp5g_far_set_seid;
   gtp5g_far_set_id;
   gtp5g_far_set_apply_action;
   gtp5g_far_set_outer_header_creation;
@@ -88,6 +90,7 @@ global:
   gtp5g_far_get_related_pdr_num;
   gtp5g_far_get_related_pdr_list;
 
+  gtp5g_qer_set_seid;
   gtp5g_qer_set_id;
   gtp5g_qer_set_gate_status;
   gtp5g_qer_set_mbr_uhigh;

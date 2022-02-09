@@ -26,6 +26,7 @@ void gtp5g_dev_set_ifidx(struct gtp5g_dev *dev, uint32_t ifidx);
  * PDR
  */
 void gtp5g_pdr_set_id(struct gtp5g_pdr *pdr, uint16_t id);
+void gtp5g_pdr_set_seid(struct gtp5g_pdr *pdr, uint64_t seid);
 void gtp5g_pdr_set_precedence(struct gtp5g_pdr *pdr, uint32_t precedence);
 void gtp5g_pdr_set_far_id(struct gtp5g_pdr *pdr, uint32_t far_id);
 void gtp5g_pdr_set_qer_id(struct gtp5g_pdr *pdr, uint32_t qer_id);
@@ -63,6 +64,7 @@ struct in_addr *gtp5g_pdr_get_local_f_teid_gtpu_addr_ipv4(struct gtp5g_pdr *pdr)
  */
 // TODO: Get FAR value
 void gtp5g_far_set_id(struct gtp5g_far *far, uint32_t id);
+void gtp5g_far_set_seid(struct gtp5g_far *far, uint64_t seid);
 void gtp5g_far_set_apply_action(struct gtp5g_far *far, uint8_t apply_action);
 void gtp5g_far_set_outer_header_creation(struct gtp5g_far *far, uint16_t desp, uint32_t teid, struct in_addr *peer_addr_ipv4, uint16_t port);
 void gtp5g_far_set_fwd_policy(struct gtp5g_far *far, char *str);
@@ -82,6 +84,7 @@ uint16_t *gtp5g_far_get_related_pdr_list(struct gtp5g_far *far);
  * QER 
  */
 void gtp5g_qer_set_id(struct gtp5g_qer *qer, uint32_t id);
+void gtp5g_qer_set_seid(struct gtp5g_qer *qer, uint64_t seid);
 void gtp5g_qer_set_gate_status(struct gtp5g_qer *qer, uint8_t ul_dl_gate);
 void gtp5g_qer_set_mbr_uhigh(struct gtp5g_qer *qer, uint32_t high);
 void gtp5g_qer_set_mbr_ulow(struct gtp5g_qer *qer, uint8_t low);
